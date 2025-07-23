@@ -20,22 +20,23 @@ def save_current_step(step):
     with open(STEP_FILE, "w") as f:
         f.write(str(step))
 
-# --- GERADOR DE PREÇOS COM GBM ---
+# --- PRICE GENERATOR WITH GBM ---
 def generate_gbm_price_history(start_price=150, steps=10, mu=0.002, sigma=0.03):
     """
-    Gera uma lista de preços usando Geometric Brownian Motion (GBM).
-    - start_price: preço inicial
-    - steps: número de pontos no histórico
-    - mu: taxa de crescimento média
-    - sigma: volatilidade
+    Generates a list of prices using Geometric Brownian Motion (GBM).
+    - start_price: initial price
+    - steps: number of points in the history
+    - mu: average growth rate
+    - sigma: volatility
     """
     prices = [float(start_price)]
     for _ in range(1, steps):
-        dt = 1  # intervalo de tempo
+        dt = 1 
         random_shock = np.random.normal(0, 1)
         price = prices[-1] * np.exp((mu - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * random_shock)
         prices.append(round(float(price), 2))
     return prices
+
 
 def generate_shared_market_data():
     stock = "Apple"
@@ -252,10 +253,10 @@ class MarketModel(Model):
                         "possible_return": possible_return
                     })
 
-# Execução principal
+# Execute Model
 model = MarketModel()
 start_step = get_last_step()
-num_steps = 20
+num_steps = 20 # change steps
 
 for i in range(start_step, start_step + num_steps):
     model.step(i)
